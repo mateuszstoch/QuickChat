@@ -1,6 +1,7 @@
 from pynput import keyboard
 import random 
 import time
+from gui import GUI
 
 early_game = [
     "Are you ready? Let's dominate this rift!", "Good luck everyone, let's do this!!!",
@@ -36,7 +37,6 @@ early_game = [
     "Pure skill, zero luck!", "Let's make them regret queuing up!",
     "I'm the master of this lane!", "Ready, set, VICTORY!"
 ]
-
 mid_game = [
     "I'm just getting warmed up!!!", "I haven't even started yet, watch this!",
     "My first item is done, now it's real!", 
@@ -72,7 +72,6 @@ mid_game = [
     "I'm just getting my secondary items, watch out!", "Unstoppable force incoming!",
     "I'm the definition of a carry!", "Let's keep the tempo!", "I'm ready for the big plays!"
 ]
-
 late_game = [
     "I haven't even started yet!!! The real fight begins now!",
     "Behold my final form! I am unstoppable!", "Full build reached. It's game over for them!",
@@ -111,31 +110,33 @@ late_game = [
     "Let's finish this and go for another win!"
 ]
 
-controller = keyboard.Controller()
+# controller = keyboard.Controller()
 
-def send_message(msg_list):
-    controller.press(keyboard.Key.enter)
-    controller.release(keyboard.Key.enter)
+# def send_message(msg_list):
+#     controller.press(keyboard.Key.enter)
+#     controller.release(keyboard.Key.enter)
     
-    time.sleep(0.05) 
+#     time.sleep(0.05) 
     
-    controller.type(f"/all {random.choice(msg_list)}")
+#     controller.type(f"/all {random.choice(msg_list)}")
     
-    time.sleep(0.05)
+#     time.sleep(0.05)
     
-    controller.press(keyboard.Key.enter)
-    controller.release(keyboard.Key.enter)
+#     controller.press(keyboard.Key.enter)
+#     controller.release(keyboard.Key.enter)
 
-def exit_script():
-    quit()
+# def exit_script():
+#     quit()
 
-def type_early(): send_message(early_game)
-def type_mid(): send_message(mid_game)
-def type_end(): send_message(late_game)
+# def type_early(): send_message(early_game)
+# def type_mid(): send_message(mid_game)
+# def type_end(): send_message(late_game)
 
-with keyboard.GlobalHotKeys({
-        '[': type_early,
-        ']': type_mid,
-        '\\': type_end,
-        '<f10>': exit_script}) as h:
-    h.join()
+# with keyboard.GlobalHotKeys({
+#         '[': type_early,
+#         ']': type_mid,
+#         '\\': type_end,
+#         '<f10>': exit_script}) as h:
+#     h.join()
+
+gui = GUI()
