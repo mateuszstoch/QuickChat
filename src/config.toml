@@ -1,0 +1,24 @@
+[visuals]
+alpha = 150
+background_color = [10,10,10]
+text_color = [200,200,200]
+
+[hotkeys]
+toggle_gui = '\' 
+previous_page = ','
+next_page = '.'
+back_to_categories = '/'
+pick_1 = '6'
+pick_2 = '7'
+pick_3 = '8'
+pick_4 = '9'
+pick_5 = '0'
+exit_app = '<f10>'
+# Change team chat / all chat 
+toggle_chat = '<insert>' 
+
+[chat]
+all_chat = '/all'
+team_chat = '/team'
+open_chat = '<enter>'
+

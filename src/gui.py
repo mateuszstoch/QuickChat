@@ -1,5 +1,4 @@
 import pygame
-from time import sleep
 import win32gui, win32con, win32api
 from math import ceil
 
@@ -13,12 +12,16 @@ class Page:
         self.page_number = page_number
     
 class GUI:
-    def __init__(self):
+    def __init__(self,lines,config):
+        text_color = config["visuals"]["text_color"]
+        self.text_color = (text_color[0],text_color[1],text_color[2])
+        background_color = config["visuals"]["background_color"]
+        self.background_color = (background_color[0], background_color[1], background_color[2])
         self.page = Page()
         self.window_width = 500
         self.window_height = 200
         self.window_visible = True
-        self.text_lines = []
+        self.text_lines = lines
         pygame.init()
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont('Arial', 20)
@@ -28,7 +31,7 @@ class GUI:
         
         styles = win32gui.GetWindowLong(self.hwnd, win32con.GWL_EXSTYLE)
         win32gui.SetWindowLong(self.hwnd, win32con.GWL_EXSTYLE, styles | win32con.WS_EX_LAYERED | win32con.WS_EX_TRANSPARENT)
-        win32gui.SetLayeredWindowAttributes(self.hwnd, win32api.RGB(0, 0, 0), 200, win32con.LWA_COLORKEY | win32con.LWA_ALPHA)
+        win32gui.SetLayeredWindowAttributes(self.hwnd, win32api.RGB(0,0,0), config["visuals"]["alpha"], win32con.LWA_COLORKEY | win32con.LWA_ALPHA)
         
         win32gui.SetWindowPos(self.hwnd, win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
                
@@ -46,7 +49,7 @@ class GUI:
                 
 
     def draw(self):
-       
+        pygame.draw.rect(self.screen, self.background_color, (0, 0, self.window_width, self.window_height), )
         pygame.draw.rect(self.screen, (50, 50, 50), (0, 0, self.window_width, self.window_height), 2)
         
         if self.page.category is None:
@@ -58,19 +61,19 @@ class GUI:
             page_count = ceil(len((self.text_lines).get(self.page.category))/5)
             header = f"{self.page.category}: \n "
             
-        title = self.font.render(header, True, (255, 255, 255))
+        title = self.font.render(header, True, self.text_color)
         self.screen.blit(title, (5, 5))
         
         start_idx = self.page.page_number * 5
         visible_items = items[start_idx : start_idx + 5]
         
         for i, item in enumerate(visible_items):
-            text = f"{(i+6)% 10}. {item}"
-            surf = self.font.render(text, True, (200, 200, 200))
+            text = f"{(i+1)% 10}. {item}"
+            surf = self.font.render(text, True, self.text_color)
             self.screen.blit(surf, (10, 30 + i * 25))
 
         text = f"{self.page.page_number+1}/{page_count}"
-        surf = self.font.render(text, True, (200, 200, 200))
+        surf = self.font.render(text, True, self.text_color)
         self.screen.blit(surf, (self.window_width-30, self.window_height-30))
         
 
@@ -106,9 +109,6 @@ class GUI:
             self.align_to_league()
         else:
             win32gui.ShowWindow(self.hwnd, win32con.SW_HIDE)
-
-    def load_text_lines(self,lines):
-        self.text_lines = lines
 
     def previous_page(self):
         if self.page.page_number > 0:
@@ -155,3 +155,4 @@ class GUI:
 
     def trigger_exit(self):
          pygame.event.post(pygame.event.Event(pygame.QUIT)) 
+
