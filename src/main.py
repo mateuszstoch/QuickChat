@@ -3,6 +3,10 @@ import time
 from gui import GUI
 import os,sys , json
 import tomllib
+import ctypes 
+
+def show_error(title, message):
+    ctypes.windll.user32.MessageBoxW(0, message, title, 0x10)
 
 if getattr(sys, 'frozen', False):
     BASE_DIR = os.path.dirname(sys.executable)
@@ -14,7 +18,7 @@ try:
     with open(json_path,"r",encoding="utf-8") as file:
         text_lines = json.load(file)
 except Exception as e:
-    print(f"Error: No text lines provided or incorrect file structure")
+    show_error("Error","Missing text_lines.json or incorrect file structure")
     os._exit(0)
 config_path = os.path.join(BASE_DIR, "config.toml")
 
@@ -22,8 +26,10 @@ try:
     with open(config_path,"rb") as file:
         config = tomllib.load(file)
 except Exception as e:
-    print(f"Error: Missing config file or incorrect file structure")
+    show_error("Error","Missing config.toml or incorrect file structure")
     os._exit(0)
+
+
 
 GLOBAL_CHAT = True
 
@@ -76,13 +82,11 @@ def exit_app(gui, hotkey):
 
         os._exit(0)
 
-gui = GUI(text_lines,config)
-
 def toggle_all_chat():
     global GLOBAL_CHAT
     GLOBAL_CHAT = not GLOBAL_CHAT
-
-
+    
+gui = GUI(text_lines,config)
 
 #register listeners 
 hotkey = keyboard.GlobalHotKeys({
