@@ -14,7 +14,7 @@ try:
     with open(json_path,"r",encoding="utf-8") as file:
         text_lines = json.load(file)
 except Exception as e:
-    print(f"No text lines provided")
+    print(f"Error: No text lines provided or incorrect file structure")
     os._exit(0)
 config_path = os.path.join(BASE_DIR, "config.toml")
 
@@ -22,8 +22,7 @@ try:
     with open(config_path,"rb") as file:
         config = tomllib.load(file)
 except Exception as e:
-    print(e)
-    print(f"No config provided")
+    print(f"Error: Missing config file or incorrect file structure")
     os._exit(0)
 
 GLOBAL_CHAT = True

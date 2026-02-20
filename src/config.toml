@@ -22,3 +22,5 @@ all_chat = '/all'
 team_chat = '/team'
 open_chat = '<enter>'
 
+[misc]
+game_name = 'League of Legends (TM) Client'

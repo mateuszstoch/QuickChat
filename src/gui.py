@@ -14,6 +14,7 @@ class Page:
 class GUI:
     def __init__(self,lines,config):
         text_color = config["visuals"]["text_color"]
+        self.game_name = config['misc']['game_name']
         self.text_color = (text_color[0],text_color[1],text_color[2])
         background_color = config["visuals"]["background_color"]
         self.background_color = (background_color[0], background_color[1], background_color[2])
@@ -27,7 +28,7 @@ class GUI:
         self.font = pygame.font.SysFont('Arial', 20)
         self.screen = pygame.display.set_mode((self.window_width, self.window_height), pygame.NOFRAME) 
         self.hwnd = pygame.display.get_wm_info()['window']
-        self.align_to_league()
+        self.align_to_game()
         
         styles = win32gui.GetWindowLong(self.hwnd, win32con.GWL_EXSTYLE)
         win32gui.SetWindowLong(self.hwnd, win32con.GWL_EXSTYLE, styles | win32con.WS_EX_LAYERED | win32con.WS_EX_TRANSPARENT)
@@ -36,11 +37,11 @@ class GUI:
         win32gui.SetWindowPos(self.hwnd, win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
                
 
-    def align_to_league(self):
+    def align_to_game(self):
         if not self.window_visible:
             return
 
-        hwnd_league = win32gui.FindWindow(None, "League of Legends (TM) Client")
+        hwnd_league = win32gui.FindWindow(None, self.game_name)
         if hwnd_league:
             rect = win32gui.GetWindowRect(hwnd_league)
             x, y = rect[0], rect[1]
@@ -106,7 +107,7 @@ class GUI:
         self.window_visible = not self.window_visible
         if self.window_visible:
             win32gui.ShowWindow(self.hwnd, win32con.SW_SHOW)
-            self.align_to_league()
+            self.align_to_game()
         else:
             win32gui.ShowWindow(self.hwnd, win32con.SW_HIDE)
 
